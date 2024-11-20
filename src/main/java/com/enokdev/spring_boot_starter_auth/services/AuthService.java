@@ -7,7 +7,6 @@ import com.enokdev.spring_boot_starter_auth.dtos.RegisterRequest;
 import com.enokdev.spring_boot_starter_auth.entities.User;
 import com.enokdev.spring_boot_starter_auth.repositories.UserRepository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,13 +16,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Service
-@RequiredArgsConstructor
+
 public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+    }
 
     public AuthResponse register(RegisterRequest request) {
         User user = new User();
@@ -34,7 +40,7 @@ public class AuthService {
 
         userRepository.save(user);
 
-        String token = jwtService.generateToken((UserDetails) user);
+        String token = jwtService.generateToken( user);
         return new AuthResponse(token, "Bearer", user.getUsername(), user.getRoles());
     }
 
@@ -47,7 +53,7 @@ public class AuthService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String token = jwtService.generateToken((UserDetails) user);
+        String token = jwtService.generateToken( user);
         return new AuthResponse(token, "Bearer", user.getUsername(), user.getRoles());
     }
 

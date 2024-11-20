@@ -8,17 +8,20 @@ import com.enokdev.spring_boot_starter_auth.dtos.RegisterRequest;
 import com.enokdev.spring_boot_starter_auth.entities.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
+
 @Tag(name = "Authentication", description = "Authentication management APIs")
 public class AuthController {
 
     private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/register")
     @Operation(summary = "Register a new user")
