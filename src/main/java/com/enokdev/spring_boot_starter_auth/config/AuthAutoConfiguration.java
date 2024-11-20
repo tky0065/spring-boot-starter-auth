@@ -1,5 +1,7 @@
 package com.enokdev.spring_boot_starter_auth.config;
 
+
+
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -11,9 +13,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 @AutoConfiguration
-@ComponentScan(basePackages = "com.spring_boot_starter_auth.auth")
-@EntityScan("com.spring_boot_starter_auth.entities")
-@EnableJpaRepositories("com.spring_boot_starter_auth.repository")
+@ComponentScan(basePackages = "com.enokdev.spring_boot_starter_auth")
+@EntityScan("com.enokdev.spring_boot_starter_auth.entities")
+@EnableJpaRepositories("com.enokdev.spring_boot_starter_auth.repositories")
 @EnableConfigurationProperties(AuthProperties.class)
 public class AuthAutoConfiguration {
 
