@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.enokdev.spring_boot_starter_auth.config.AuthAutoConfiguration
