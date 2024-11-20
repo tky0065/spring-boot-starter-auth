@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.enokdev.spring_boot_starter_auth.config.AuthAutoConfiguration
+com.enokdev.spring_boot_starter_auth.config.SecurityConfig,\
+com.enokdev.spring_boot_starter_auth.config.JwtConfig

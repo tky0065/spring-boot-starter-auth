@@ -1,5 +1,6 @@
 package com.enokdev.spring_boot_starter_auth.exeption;
 
+import com.enokdev.spring_boot_starter_auth.dtos.ErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,5 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @Data
-    @AllArgsConstructor
-    public static class ErrorResponse {
-        private int status;
-        private String message;
-    }
+
 }
