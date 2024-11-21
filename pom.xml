@@ -8,7 +8,7 @@
 		<version>3.3.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.enokdev</groupId>
+	<groupId>io.github.tky0065</groupId>
 	<artifactId>spring-boot-starter-auth</artifactId>
 	<version>1.0.3</version>
 	<packaging>jar</packaging>
@@ -31,20 +31,19 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:git://github.com/tky0065/spring-boot-starter-auth</connection>
+		<developerConnection>scm:git:ssh://github.com:tky0065/spring-boot-starter-auth</developerConnection>
+		<url>http://github.com/tky0065/spring-boot-starter-auth/tree/master</url>
 	</scm>
 	<properties>
 		<java.version>21</java.version>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.boot.repackage.skip>true</spring.boot.repackage.skip>
+
 		<jwt.version>0.12.6</jwt.version>
-			<maven.test.skip>true</maven.test.skip>
+
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -134,10 +133,11 @@
 			<plugin>
 				<groupId>org.sonatype.central</groupId>
 				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>0.5.0</version>
+				<version>0.6.0</version>
 				<extensions>true</extensions>
 				<configuration>
 					<publishingServerId>central</publishingServerId>
+					<autoPublish>true</autoPublish>
 				</configuration>
 			</plugin>
 
