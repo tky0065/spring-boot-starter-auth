@@ -252,7 +252,7 @@ Distribué sous la licence MIT. Voir `LICENSE` pour plus d'informations.
 
 Pour obtenir de l'aide :
 - Ouvrez une issue sur GitHub
-- Envoyez un email à [votre-email@example.com]
+- Envoyez un email à enokdev.bf@gmail.com
 
 ## 🎯 Roadmap
 
