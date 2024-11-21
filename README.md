@@ -43,10 +43,7 @@ Ajoutez ces propriétés à votre `application.properties` ou `application.yml`:
 auth.jwt.secret=VotreClefSecrete
 auth.jwt.expiration=86400000  # 24 heures en millisecondes
 
-# Swagger Configuration
-auth.swagger.title=Authentication API
-auth.swagger.description=API for authentication management
-auth.swagger.version=1.0
+
 
 # Base de données (exemple avec H2)
 spring.datasource.url=jdbc:h2:mem:testdb
@@ -267,7 +264,7 @@ Pour obtenir de l'aide :
 
 ## 📦 Versions
 
-- **1.0.0**
+- **1.0.3**
     - Authentification JWT de base
     - Gestion des utilisateurs
     - Documentation Swagger
