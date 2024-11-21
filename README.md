@@ -22,14 +22,14 @@ Ajoutez la dépendance suivante à votre `pom.xml` :
 <dependency>
     <groupId>io.github.tky0065</groupId>
     <artifactId>spring-boot-starter-auth</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'io.github.tky0065:spring-boot-starter-auth:1.0.0'
+implementation 'io.github.tky0065:spring-boot-starter-auth:1.0.3'
 ```
 
 ## ⚙️ Configuration
