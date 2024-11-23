@@ -1,0 +1,21 @@
+<!-- src/main/resources/templates/account-locked-email.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Locked</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6;">
+<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2>Account Security Alert</h2>
+    <p>Your account has been temporarily locked due to multiple failed login attempts.</p>
+    <p>For your security, you will not be able to login for the next 24 hours.</p>
+    <p>If you did not attempt to login, please contact our support team immediately at:
+        <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}"></a>
+    </p>
+    <p>Your account will be automatically unlocked after 24 hours, or you can contact support to unlock it sooner.</p>
+    <p>IP Address of last attempt: <span th:text="${ipAddress}"></span></p>
+    <p>Time of lock: <span th:text="${lockTime}"></span></p>
+</div>
+</body>
+</html>

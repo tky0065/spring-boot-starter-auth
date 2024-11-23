@@ -1,0 +1,23 @@
+<!-- src/main/resources/templates/confirmation-email.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Email Confirmation</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6;">
+<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+  <h2>Confirm your email address</h2>
+  <p>Thank you for registering! Please click the button below to confirm your email address:</p>
+  <p style="text-align: center;">
+    <a th:href="${confirmationUrl}"
+       style="background-color: #4CAF50; color: white; padding: 12px 20px;
+                      text-decoration: none; border-radius: 4px; display: inline-block;">
+      Confirm Email
+    </a>
+  </p>
+  <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+  <p th:text="${confirmationUrl}"></p>
+</div>
+</body>
+</html>
