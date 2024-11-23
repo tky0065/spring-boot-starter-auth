@@ -140,6 +140,8 @@ La documentation Swagger UI est disponible à l'URL :
 ```
 http://votre-serveur:port/swagger-ui.html
 ```
+## 📍 swagger-ui
+![swagger ui](swagger-ui.png)
 
 ## 🔧 Personnalisation
 
