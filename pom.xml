@@ -8,8 +8,8 @@
 		<version>3.3.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.enokdev</groupId>
-<!--	<groupId>io.github.tky0065</groupId>-->
+<!--	<groupId>com.enokdev</groupId>-->
+	<groupId>io.github.tky0065</groupId>
 	<artifactId>spring-boot-starter-auth</artifactId>
 	<version>1.0.4</version>
 	<packaging>jar</packaging>
