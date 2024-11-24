@@ -90,6 +90,8 @@ logging.level.com.enokdev=DEBUG
     "password": "password123"
   }
   ```
+  
+
 
 #### Gestion du compte
 - **GET** `/api/auth/current-user` - Obtenir les informations de l'utilisateur courant
@@ -100,6 +102,39 @@ logging.level.com.enokdev=DEBUG
 - **PUT** `/api/users/{userId}/profile` - Mise à jour du profil
 - **GET** `/api/users/{userId}/login-history` - Historique des connexions
 
+
+## 📖 Documentation API
+La documentation Swagger UI est disponible à l'URL :
+```
+http://votre-serveur:port/swagger-ui.html
+```
+### 📍 swagger-ui
+![swagger ui](swagger-ui.png)
+## 🔧 Personnalisation
+### Configuration personnalisée du JWT
+Créez une classe de configuration :
+```java
+@Configuration
+public class CustomJwtConfig {
+    
+    @Bean
+    public JwtService customJwtService() {
+        return new CustomJwtService();
+    }
+}
+```
+
+### Personnalisation du UserDetailsService
+```java
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+    
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        // Votre implémentation
+    }
+}
+```
 ### Modèles de réponse
 
 #### AuthResponse
@@ -201,3 +236,24 @@ http://localhost:8080/api/h2-console
 - Les paramètres de sécurité sont configurables
 - L'historique des connexions est automatiquement géré
 - Le verrouillage de compte est automatique après 3 échecs
+
+## 🤝 Contribution
+Les contributions sont les bienvenues ! Voici comment vous pouvez contribuer :
+1. Fork le projet
+2. Créez votre branche (`git checkout -b feature/AmazingFeature`)
+3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrez une Pull Request
+## 📄 Licence
+Distribué sous la licence MIT. Voir `LICENSE` pour plus d'informations.
+## ✨ Support
+Pour obtenir de l'aide :
+- Ouvrez une issue sur GitHub
+- Envoyez un email à enokdev.bf@gmail.com
+## 🎯 Roadmap
+
+- [ ] Support des réseaux sociaux (OAuth2)
+- [ ] Authentification à deux facteurs
+- [ ] Support de WebSocket sécurisé
+- [ ] Interface d'administration
+- [ ] Support de Redis pour le blacklisting des tokens
