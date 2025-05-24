@@ -1,10 +1,11 @@
 # Spring Boot Starter Auth
 
-Un starter Spring Boot complet pour l'authentification JWT avec gestion des utilisateurs, historique des connexions, confirmation d'email et documentation Swagger UI intégrée.
+Un starter Spring Boot complet pour l'authentification JWT et OAuth2 avec gestion des utilisateurs, historique des connexions, confirmation d'email et documentation Swagger UI intégrée.
 
 ## 📋 Caractéristiques
 
 - ✅ Authentification JWT complète
+- 🌐 Support OAuth2 pour l'authentification sociale
 - 🔐 Gestion des rôles et autorisations
 - 📧 Confirmation d'email et réinitialisation de mot de passe
 - 🔒 Verrouillage de compte après tentatives échouées
@@ -24,23 +25,36 @@ Ajoutez la dépendance suivante à votre `pom.xml` :
 <dependency>
     <groupId>io.github.tky0065</groupId>
     <artifactId>spring-boot-starter-auth</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-implementation 'io.github.tky0065:spring-boot-starter-auth:1.0.4'
+implementation 'io.github.tky0065:spring-boot-starter-auth:1.0.5'
 ```
 
 ## ⚙️ Configuration
 
-### Application Properties
+Le starter utilise un système de configuration unifié sous le préfixe `spring-boot-starter-auth`.
+
+### Configuration dans application.properties/yml
 
 ```properties
-# JWT Configuration
-auth.jwt.secret=VotreClefSecrete
-auth.jwt.expiration=86400000  # 24 heures en millisecondes
+# Configuration JWT
+spring-boot-starter-auth.jwt.secret=VotreClefSecrete
+spring-boot-starter-auth.jwt.expiration=86400000  # 24 heures en millisecondes
+
+# Configuration OAuth2
+spring-boot-starter-auth.oauth2.enabled=true
+spring-boot-starter-auth.oauth2.success-url=/home
+spring-boot-starter-auth.oauth2.failure-url=/login?error=true
+spring-boot-starter-auth.oauth2.authorized-redirect-uris=http://localhost:8080/oauth2/redirect,http://localhost:3000/oauth2/redirect
+
+# Configuration Swagger
+spring-boot-starter-auth.swagger.title=API d'Authentification
+spring-boot-starter-auth.swagger.description=API pour la gestion complète de l'authentification
+spring-boot-starter-auth.swagger.version=1.0
 
 # Base de données
 spring.datasource.url=jdbc:h2:mem:testdb
@@ -48,6 +62,7 @@ spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=password
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
 
 # Email Configuration
 spring.mail.host=localhost
@@ -90,8 +105,10 @@ logging.level.com.enokdev=DEBUG
     "password": "password123"
   }
   ```
-  
 
+#### OAuth2
+- **GET** `/oauth2/authorization/{provider}` - Redirection vers le fournisseur OAuth2 (Google, Facebook, etc.)
+- **GET** `/oauth2/callback/{provider}` - Callback après authentification OAuth2
 
 #### Gestion du compte
 - **GET** `/api/auth/current-user` - Obtenir les informations de l'utilisateur courant
@@ -110,7 +127,9 @@ http://votre-serveur:port/swagger-ui.html
 ```
 ### 📍 swagger-ui
 ![swagger ui](swagger-ui.png)
+
 ## 🔧 Personnalisation
+
 ### Configuration personnalisée du JWT
 Créez une classe de configuration :
 ```java
@@ -135,6 +154,21 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 }
 ```
+
+### Configuration OAuth2
+Pour activer l'authentification OAuth2 avec des fournisseurs comme Google, GitHub, etc., ajoutez la configuration suivante :
+
+```properties
+# Google OAuth2
+spring.security.oauth2.client.registration.google.client-id=your-client-id
+spring.security.oauth2.client.registration.google.client-secret=your-client-secret
+spring.security.oauth2.client.registration.google.scope=email,profile
+
+# GitHub OAuth2
+spring.security.oauth2.client.registration.github.client-id=your-client-id
+spring.security.oauth2.client.registration.github.client-secret=your-client-secret
+```
+
 ### Modèles de réponse
 
 #### AuthResponse
@@ -150,110 +184,51 @@ public class CustomUserDetailsService implements UserDetailsService {
 }
 ```
 
-#### LoginHistoryResponse
-```json
-{
-  "timestamp": "2024-11-24T15:30:00",
-  "success": true,
-  "ipAddress": "192.168.1.*",
-  "userAgent": "Mozilla/5.0...",
-  "location": "Ouagadougou, Burkina Faso"
-}
-```
+## 🛠️ Publication sur Maven Central
 
-## 📊 Modèle de données
+Pour publier cette bibliothèque sur Maven Central, suivez ces étapes :
 
-### User Entity
-```java
-@Entity
-public class User {
-    private Long id;
-    private String username;
-    private String password;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private boolean enabled;
-    private boolean accountNonLocked;
-    private int failedAttempts;
-    private LocalDateTime lockTime;
-    private String resetToken;
-    private LocalDateTime resetTokenExpiry;
-    private String emailConfirmationToken;
-    private Set<String> roles;
-    private List<LoginHistory> loginHistory;
-}
-```
+1. **Configurer votre environnement**
 
-## 🔒 Fonctionnalités de sécurité
+   Assurez-vous d'avoir configuré votre environnement avec les clés GPG :
+   ```bash
+   gpg --gen-key
+   gpg --list-keys
+   gpg --keyserver keyserver.ubuntu.com --send-keys YOUR_KEY_ID
+   ```
 
-- Verrouillage de compte après 3 tentatives échouées
-- Email de confirmation obligatoire
-- Réinitialisation sécurisée du mot de passe
-- Historique des connexions avec géolocalisation
-- Protection contre la force brute
-- Tokens JWT avec expiration configurable
-- Mots de passe hashés avec BCrypt
+2. **Configurer votre fichier settings.xml de Maven**
 
-## 📧 Templates d'emails
+   Ajoutez vos identifiants Sonatype dans `~/.m2/settings.xml` :
+   ```xml
+   <settings>
+     <servers>
+       <server>
+         <id>central</id>
+         <username>sonatype_username</username>
+         <password>sonatype_password</password>
+       </server>
+     </servers>
+   </settings>
+   ```
 
-- Confirmation d'inscription
-- Réinitialisation de mot de passe
-- Notification de verrouillage de compte
-- Confirmation de changement de mot de passe
+3. **Exécuter la commande de publication**
 
-## 🧪 Tests
+   Utilisez le plugin Central Publishing de Sonatype :
+   ```bash
+   mvn clean deploy -P release
+   ```
+   
+   Ou exécutez le script deploy.bat fourni :
+   ```bash
+   ./deploy.bat
+   ```
 
-Pour tester l'application :
-
-1. Démarrer MailHog pour les tests d'email :
-```bash
-docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
-```
-
-2. Accéder à l'interface MailHog :
-```
-http://localhost:8025
-```
-
-3. Console H2 :
-```
-http://localhost:8080/api/h2-console
-```
-
-## 📈 Versions
-
-- **1.0.4**
-  - Ajout de la confirmation d'email
-  - Ajout du verrouillage de compte
-  - Ajout de l'historique des connexions
-  - Amélioration de la gestion des tokens
-
-## ⚠️ Notes importantes
-
-- La clé secrète JWT doit être changée en production
-- Les templates d'emails sont personnalisables
-- Les paramètres de sécurité sont configurables
-- L'historique des connexions est automatiquement géré
-- Le verrouillage de compte est automatique après 3 échecs
-
-## 🤝 Contribution
-Les contributions sont les bienvenues ! Voici comment vous pouvez contribuer :
-1. Fork le projet
-2. Créez votre branche (`git checkout -b feature/AmazingFeature`)
-3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrez une Pull Request
 ## 📄 Licence
-Distribué sous la licence MIT. Voir `LICENSE` pour plus d'informations.
-## ✨ Support
-Pour obtenir de l'aide :
-- Ouvrez une issue sur GitHub
-- Envoyez un email à enokdev.bf@gmail.com
-## 🎯 Roadmap
 
-- [ ] Support des réseaux sociaux (OAuth2)
-- [ ] Authentification à deux facteurs
-- [ ] Support de WebSocket sécurisé
-- [ ] Interface d'administration
-- [ ] Support de Redis pour le blacklisting des tokens
+Ce projet est sous licence MIT - consultez le fichier LICENSE pour plus de détails.
+
+## 👨‍💻 Auteur
+
+Yacouba KONE - [EnokDev](https://enok-dev.vercel.app/)
+

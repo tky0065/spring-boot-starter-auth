@@ -1,8 +1,11 @@
 package com.enokdev.spring_boot_starter_auth.entities;
 
+import com.enokdev.spring_boot_starter_auth.oauth2.AuthProvider;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +14,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -33,17 +35,32 @@ public class User {
 
     @Column(unique = true)
     private String username;
-    @Column(nullable = false)
-    private String password;
 
+    @Column(nullable = true)  // Rendre nullable pour OAuth2
+    private String password;
 
     @Column(unique = true)
     private String email;
 
     @Column(nullable = true)
     private String firstName;
+
     @Column(nullable = true)
     private String lastName;
+
+    @Column(nullable = true)
+    private String name;     // Ajout pour OAuth2
+
+    @Column(nullable = true)
+    private String imageUrl; // Ajout pour OAuth2
+
+    private boolean emailVerified = false; // Ajout pour OAuth2
+
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider = AuthProvider.LOCAL; // Ajout pour OAuth2
+
+    private String providerId; // Ajout pour OAuth2
+
     private LocalDateTime createdAt;
     private LocalDateTime lastLogin;
     private boolean enabled = false;
@@ -64,4 +81,8 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
+
+    public boolean isLocked() {
+        return !this.isAccountNonLocked();
+    }
 }

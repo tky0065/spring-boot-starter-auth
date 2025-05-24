@@ -150,4 +150,6 @@ public class AuthController {
         List<LoginHistory> history = authService.getLoginHistory(userId);
         return ResponseEntity.ok(LoginHistoryResponse.fromLoginHistory(history));
     }
+
+
 }
