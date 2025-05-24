@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
-<!--	<groupId>com.enokdev</groupId>-->
 	<groupId>io.github.tky0065</groupId>
 	<artifactId>spring-boot-starter-auth</artifactId>
- 	<version>1.0.5</version>
+	<version>1.0.5</version>
 	<packaging>jar</packaging>
 	<name>Spring Boot Starter Auth</name>
 	<description>Spring Boot Starter for JWT and OAuth2 Authentication</description>
@@ -40,10 +39,10 @@
 		<java.version>21</java.version>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
-
 		<jwt.version>0.12.6</jwt.version>
-
 	</properties>
+
+
 
 	<dependencies>
 		<dependency>
@@ -130,6 +129,18 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.7.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+					<autoPublish>true</autoPublish>
+					<waitUntil>published</waitUntil>
+				</configuration>
+			</plugin>
+			<!-- Spring Boot Plugin -->
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${project.parent.version}</version>
@@ -143,18 +154,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.sonatype.central</groupId>-->
-<!--				<artifactId>central-publishing-maven-plugin</artifactId>-->
-<!--				<version>0.6.0</version>-->
-<!--				<extensions>true</extensions>-->
-<!--				<configuration>-->
-<!--					<publishingServerId>central</publishingServerId>-->
-<!--					<autoPublish>true</autoPublish>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
-
-			<!--            javadoc-->
+			<!-- Javadoc plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -168,10 +168,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--            source-->
+			<!-- Source plugin (une seule fois, pas de doublon) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -181,7 +182,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--            pom, .asc-->
+			<!-- GPG signing plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -193,6 +194,12 @@
 						<goals>
 							<goal>sign</goal>
 						</goals>
+						<configuration>
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -206,42 +213,10 @@
 					<compilerArgs>
 						<arg>-parameters</arg>
 					</compilerArgs>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>${lombok.version}</version>
-						</path>
-					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<classifier>exec</classifier>-->
-<!--				</configuration>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<goals>-->
-<!--							<goal>repackage</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
 		</plugins>
 	</build>
-
-<!--	<distributionManagement>-->
-<!--		<snapshotRepository>-->
-<!--			<id>ossrh</id>-->
-<!--			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
-<!--		</snapshotRepository>-->
-<!--		<repository>-->
-<!--			<id>ossrh</id>-->
-<!--			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--		</repository>-->
-<!--	</distributionManagement>-->
 
 	<profiles>
 		<profile>
@@ -249,72 +224,20 @@
 			<build>
 				<plugins>
 					<!-- Sonatype Central publishing plugin -->
-					<plugin>
-						<groupId>org.sonatype.central</groupId>
-						<artifactId>central-publishing-maven-plugin</artifactId>
-						<version>0.6.0</version>
-						<extensions>true</extensions>
-						<configuration>
-							<publishingServerId>central</publishingServerId>
-
-							<autoPublish>true</autoPublish>
-							<waitUntil>published</waitUntil>
-						</configuration>
-					</plugin>
-
-					<!-- Javadoc plugin -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.3.0</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
-					<!-- Source plugin -->
 <!--					<plugin>-->
-<!--						<groupId>org.apache.maven.plugins</groupId>-->
-<!--						<artifactId>maven-source-plugin</artifactId>-->
-<!--						<executions>-->
-<!--							<execution>-->
-<!--								<id>attach-sources</id>-->
-<!--								<goals>-->
-<!--									<goal>jar-no-fork</goal>-->
-<!--								</goals>-->
-<!--							</execution>-->
-<!--						</executions>-->
+<!--						<groupId>org.sonatype.central</groupId>-->
+<!--						<artifactId>central-publishing-maven-plugin</artifactId>-->
+<!--						<version>0.7.0</version>-->
+<!--						<extensions>true</extensions>-->
+<!--						<configuration>-->
+<!--							<publishingServerId>central</publishingServerId>-->
+<!--							<autoPublish>true</autoPublish>-->
+<!--							<waitUntil>published</waitUntil>-->
+<!--						</configuration>-->
 <!--					</plugin>-->
-
-					<!-- GPG signing plugin -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-								<configuration>
-									<gpgArguments>
-										<arg>--pinentry-mode</arg>
-										<arg>loopback</arg>
-									</gpgArguments>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
+
 </project>

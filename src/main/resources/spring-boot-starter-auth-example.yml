@@ -1,0 +1,81 @@
+# Exemple de configuration pour spring-boot-starter-auth
+# Copiez ces propriétés dans votre fichier application.yml et personnalisez selon vos besoins
+
+spring-boot-starter-auth:
+  # Configuration JWT
+  jwt:
+    secret: VotreClefSecrete404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    expiration: 86400000  # 24 heures en millisecondes
+
+  # Configuration OAuth2
+  oauth2:
+    enabled: true
+    success-url: /home
+    failure-url: /login?error=true
+    authorized-redirect-uris:
+      - http://localhost:8080/oauth2/redirect
+      - http://localhost:3000/oauth2/redirect
+
+  # Configuration Swagger
+  swagger:
+    title: API d'Authentification
+    description: API pour la gestion complète de l'authentification
+    version: 1.0
+
+# Configuration nécessaire pour OAuth2 avec des fournisseurs externes
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            scope:
+              - user:email
+              - read:user
+
+  # Configuration de la base de données
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+
+  # Configuration des emails
+  mail:
+    host: localhost
+    port: 1025
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# Configuration de l'application
+app:
+  email:
+    from: noreply@yourdomain.com
+  base-url: http://localhost:8080
+  security:
+    max-failed-attempts: 3
+    lock-duration-hours: 24
+
+# Configuration des logs
+logging:
+  level:
+    com.enokdev: DEBUG
+    org.springframework.security: INFO
