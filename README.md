@@ -87,7 +87,7 @@ logging.level.com.enokdev=DEBUG
 ### Endpoints disponibles
 
 #### Authentification
-- **POST** `/api/auth/register` - Inscription d'un nouvel utilisateur
+- **POST** `/api/auth/register` - Insc  ription d'un nouvel utilisateur
   ```json
   {
     "username": "user",

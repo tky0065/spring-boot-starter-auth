@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.github.tky0065</groupId>
 	<artifactId>spring-boot-starter-auth</artifactId>
-	<version>1.0.5</version>
+	<version>1.0.6</version>
 	<packaging>jar</packaging>
 	<name>Spring Boot Starter Auth</name>
 	<description>Spring Boot Starter for JWT and OAuth2 Authentication</description>
@@ -136,26 +136,10 @@
 				<extensions>true</extensions>
 				<configuration>
 					<publishingServerId>central</publishingServerId>
-					<autoPublish>true</autoPublish>
-					<waitUntil>published</waitUntil>
 				</configuration>
 			</plugin>
-			<!-- Spring Boot Plugin -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${project.parent.version}</version>
-				<configuration>
-					<skip>true</skip>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<!-- Javadoc plugin -->
+
+			<!--            javadoc-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -169,21 +153,21 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Source plugin (une seule fois, pas de doublon) -->
+			<!--            source-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
 						<goals>
-							<goal>jar</goal>
+							<goal>jar-no-fork</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
-			<!-- GPG signing plugin -->
+			<!--            pom, .asc-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -195,39 +179,10 @@
 						<goals>
 							<goal>sign</goal>
 						</goals>
-						<configuration>
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Compiler Plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<compilerArgs>
-						<arg>-parameters</arg>
-					</compilerArgs>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 </project>
