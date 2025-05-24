@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.github.tky0065</groupId>
 	<artifactId>spring-boot-starter-auth</artifactId>
-	<version>1.0.6</version>
+	<version>1.0.7</version>
 	<packaging>jar</packaging>
 	<name>Spring Boot Starter Auth</name>
 	<description>Spring Boot Starter for JWT and OAuth2 Authentication</description>
@@ -62,6 +62,7 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.6.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -223,18 +224,7 @@
 			<id>release</id>
 			<build>
 				<plugins>
-					<!-- Sonatype Central publishing plugin -->
-<!--					<plugin>-->
-<!--						<groupId>org.sonatype.central</groupId>-->
-<!--						<artifactId>central-publishing-maven-plugin</artifactId>-->
-<!--						<version>0.7.0</version>-->
-<!--						<extensions>true</extensions>-->
-<!--						<configuration>-->
-<!--							<publishingServerId>central</publishingServerId>-->
-<!--							<autoPublish>true</autoPublish>-->
-<!--							<waitUntil>published</waitUntil>-->
-<!--						</configuration>-->
-<!--					</plugin>-->
+
 				</plugins>
 			</build>
 		</profile>

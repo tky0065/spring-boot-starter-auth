@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "spring-boot-starter-auth")
+@ConfigurationProperties(prefix = "auth")
 public class AuthProperties {
     /**
      * Configuration JWT pour l'authentification

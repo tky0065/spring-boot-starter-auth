@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Component
 @ConfigurationProperties(prefix = "spring-boot-starter-auth.oauth2")
 public class OAuth2Properties {
     /**
