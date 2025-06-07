@@ -15,6 +15,14 @@ Un starter Spring Boot complet pour l'authentification JWT et OAuth2 avec gestio
 - 🛡️ Configuration de sécurité Spring préconfigurée
 - 📦 Auto-configuration Spring Boot
 - 🎯 Support des bases de données JPA
+- 🔧 Robustesse améliorée pour la persistance des entités
+
+## 📢 Changements récents
+
+### Version 1.0.7
+- ✅ Correction du problème de contrainte NOT NULL sur les champs lors de la persistance des entités AuthUser
+- ✅ Ajout d'une méthode `@PrePersist` pour garantir l'initialisation des valeurs requises avant la persistance
+- ✅ Amélioration de la stabilité lors de l'héritage d'entités
 
 ## 📥 Installation
 
@@ -25,13 +33,13 @@ Ajoutez la dépendance suivante à votre `pom.xml` :
 <dependency>
     <groupId>io.github.tky0065</groupId>
     <artifactId>spring-boot-starter-auth</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-implementation 'io.github.tky0065:spring-boot-starter-auth:1.0.6'
+implementation 'io.github.tky0065:spring-boot-starter-auth:1.0.7'
 ```
 
 ## ⚙️ Configuration
