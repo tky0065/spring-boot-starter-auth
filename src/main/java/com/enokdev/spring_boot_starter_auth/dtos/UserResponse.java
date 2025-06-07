@@ -1,6 +1,6 @@
 package com.enokdev.spring_boot_starter_auth.dtos;
 
-import com.enokdev.spring_boot_starter_auth.entities.User;
+import com.enokdev.spring_boot_starter_auth.entities.AuthUser;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,7 +16,7 @@ public class UserResponse {
     private LocalDateTime createdAt;
     private LocalDateTime lastLogin;
 
-    public static UserResponse fromUser(User user) {
+    public static UserResponse fromUser(AuthUser user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())

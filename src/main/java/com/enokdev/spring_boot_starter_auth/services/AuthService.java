@@ -3,13 +3,12 @@ package com.enokdev.spring_boot_starter_auth.services;
 import com.enokdev.spring_boot_starter_auth.api.IAuthService;
 import com.enokdev.spring_boot_starter_auth.config.IPUtils;
 import com.enokdev.spring_boot_starter_auth.dtos.AuthResponse;
-import com.enokdev.spring_boot_starter_auth.dtos.ErrorResponse;
 import com.enokdev.spring_boot_starter_auth.dtos.LoginRequest;
 import com.enokdev.spring_boot_starter_auth.dtos.RegisterRequest;
-import com.enokdev.spring_boot_starter_auth.dtos.UserDTO;
+import com.enokdev.spring_boot_starter_auth.dtos.AuthUserDTO;
 import com.enokdev.spring_boot_starter_auth.dtos.UserProfileUpdateDto;
 import com.enokdev.spring_boot_starter_auth.entities.LoginHistory;
-import com.enokdev.spring_boot_starter_auth.entities.User;
+import com.enokdev.spring_boot_starter_auth.entities.AuthUser;
 import com.enokdev.spring_boot_starter_auth.exeption.AccountLockedException;
 import com.enokdev.spring_boot_starter_auth.exeption.EmailAlreadyExistsException;
 import com.enokdev.spring_boot_starter_auth.exeption.InvalidTokenException;
@@ -87,7 +86,7 @@ public class AuthService implements IAuthService {
     public AuthResponse login(LoginRequest request) {
         try {
             // Vérifier si l'utilisateur existe
-            User user = userRepository.findByUsername(request.getUsername())
+            AuthUser user = userRepository.findByUsername(request.getUsername())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
 
             // Vérifier si le compte est activé
@@ -159,7 +158,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public UserDTO getCurrentUser() {
+    public AuthUserDTO getCurrentUser() {
         try {
             // Récupérer l'authentification courante
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -173,7 +172,7 @@ public class AuthService implements IAuthService {
 
 
             // Tenter de trouver l'utilisateur par username ET email
-            User user = userRepository.findByUsernameOrEmail(authentication.getName(), authentication.getName())
+            AuthUser user = userRepository.findByUsernameOrEmail(authentication.getName(), authentication.getName())
                     .orElseThrow(() -> {
                         log.error("User not found for authenticated username/email: {}", authentication.getName());
                         return new UserNotFoundException("User not found for authenticated session");
@@ -181,7 +180,7 @@ public class AuthService implements IAuthService {
 
             log.info("Successfully retrieved current user: {}", user.getUsername());
 
-            return UserDTO.builder()
+            return AuthUserDTO.builder()
                     .id(user.getId())
                     .username(user.getUsername())
                     .email(user.getEmail())
@@ -219,7 +218,7 @@ public class AuthService implements IAuthService {
 
         try {
             // Créer un nouvel utilisateur
-            User user = new User();
+            AuthUser user = new AuthUser();
 
             user.setEmail(registrationDto.getEmail());
             user.setUsername(registrationDto.getUsername());
@@ -239,7 +238,7 @@ public class AuthService implements IAuthService {
             user.setEmailConfirmationToken(confirmationToken);
 
             // Sauvegarder l'utilisateur
-            User savedUser = userRepository.save(user);
+            AuthUser savedUser = userRepository.save(user);
             log.info("User registered successfully: {}", savedUser.getEmail());
 
             // Envoyer l'email de confirmation
@@ -267,7 +266,7 @@ public class AuthService implements IAuthService {
     }
 
     public void confirmEmail(String token) {
-        User user = userRepository.findByEmailConfirmationToken(token)
+        AuthUser user = userRepository.findByEmailConfirmationToken(token)
                 .orElseThrow(() -> new InvalidTokenException("Invalid confirmation token"));
 
         user.setEnabled(true);
@@ -276,7 +275,7 @@ public class AuthService implements IAuthService {
     }
 
     public void initiatePasswordReset(String email) {
-        User user = userRepository.findByEmail(email)
+        AuthUser user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         String resetToken = generateToken();
@@ -288,7 +287,7 @@ public class AuthService implements IAuthService {
     }
 
     public void resetPassword(String token, String newPassword) {
-        User user = userRepository.findByResetToken(token)
+        AuthUser user = userRepository.findByResetToken(token)
                 .orElseThrow(() -> new InvalidTokenException("Invalid reset token"));
 
         if (user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
@@ -303,8 +302,8 @@ public class AuthService implements IAuthService {
     }
     @Override
 
-    public User updateProfile(Long userId, UserProfileUpdateDto updateDto) {
-        User user = userRepository.findById(userId)
+    public AuthUser updateProfile(Long userId, UserProfileUpdateDto updateDto) {
+        AuthUser user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         if (updateDto.getFirstName() != null) {
@@ -320,7 +319,7 @@ public class AuthService implements IAuthService {
     @Override
 
     public void recordLoginAttempt(String email, boolean success) {
-        User user = userRepository.findByEmail(email)
+        AuthUser user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         LoginHistory loginHistory = new LoginHistory();
@@ -344,7 +343,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public List<LoginHistory> getLoginHistory(Long userId) {
-        User user = userRepository.findById(userId)
+        AuthUser user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         try {
@@ -356,7 +355,7 @@ public class AuthService implements IAuthService {
     }
 
 
-    private void lockUser(User user) {
+    private void lockUser(AuthUser user) {
         user.setAccountNonLocked(false);
         user.setLockTime(LocalDateTime.now());
         userRepository.save(user);
@@ -364,7 +363,7 @@ public class AuthService implements IAuthService {
         emailService.sendAccountLockedEmail(user.getEmail());
     }
     @Override
-    public void unlockWhenTimeExpired(User user) {
+    public void unlockWhenTimeExpired(AuthUser user) {
         if (user.getLockTime() != null && user.getLockTime().plusHours(LOCK_TIME_DURATION)
                 .isBefore(LocalDateTime.now())) {
             user.setAccountNonLocked(true);

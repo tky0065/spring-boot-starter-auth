@@ -1,12 +1,10 @@
 package com.enokdev.spring_boot_starter_auth.dtos;
 
-import com.enokdev.spring_boot_starter_auth.entities.User;
+import com.enokdev.spring_boot_starter_auth.entities.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Set;
 
@@ -27,7 +25,7 @@ public class AuthResponse {
     private Set<String> roles;
     private String message;
 
-    public static Object fromUser(User updatedUser) {
+    public static Object fromUser(AuthUser updatedUser) {
         return null;
     }
 }

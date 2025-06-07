@@ -1,13 +1,12 @@
 package com.enokdev.spring_boot_starter_auth.oauth2;
 
 import com.enokdev.spring_boot_starter_auth.config.OAuth2Properties;
-import com.enokdev.spring_boot_starter_auth.entities.User;
+import com.enokdev.spring_boot_starter_auth.entities.AuthUser;
 import com.enokdev.spring_boot_starter_auth.services.JwtService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -45,7 +44,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         String targetUrl = redirectUri != null ? redirectUri : oAuth2Properties.getSuccessUrl();
-        String token = jwtService.generateToken((User) authentication);
+        String token = jwtService.generateToken((AuthUser) authentication);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)

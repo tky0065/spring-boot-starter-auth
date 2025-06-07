@@ -5,14 +5,12 @@ import com.enokdev.spring_boot_starter_auth.dtos.ErrorResponse;
 import com.enokdev.spring_boot_starter_auth.dtos.LoginHistoryResponse;
 import com.enokdev.spring_boot_starter_auth.dtos.LoginRequest;
 import com.enokdev.spring_boot_starter_auth.dtos.RegisterRequest;
-import com.enokdev.spring_boot_starter_auth.dtos.UserDTO;
+import com.enokdev.spring_boot_starter_auth.dtos.AuthUserDTO;
 import com.enokdev.spring_boot_starter_auth.api.IAuthService;
 import com.enokdev.spring_boot_starter_auth.dtos.UserProfileUpdateDto;
 import com.enokdev.spring_boot_starter_auth.dtos.UserResponse;
 import com.enokdev.spring_boot_starter_auth.entities.LoginHistory;
-import com.enokdev.spring_boot_starter_auth.entities.User;
-import com.enokdev.spring_boot_starter_auth.exeption.AccountLockedException;
-import com.enokdev.spring_boot_starter_auth.exeption.UserNotActiveException;
+import com.enokdev.spring_boot_starter_auth.entities.AuthUser;
 import com.enokdev.spring_boot_starter_auth.exeption.UserNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -91,7 +89,7 @@ public class AuthController {
     @GetMapping("/current-user")
     public ResponseEntity<?> getCurrentUser() {
         try {
-            UserDTO currentUser = authService.getCurrentUser();
+            AuthUserDTO currentUser = authService.getCurrentUser();
             return ResponseEntity.ok(currentUser);
         } catch (UserNotFoundException e) {
             log.warn("Attempt to get current user with invalid session");
@@ -140,7 +138,7 @@ public class AuthController {
     public ResponseEntity<UserResponse> updateProfile(
             @PathVariable Long userId,
             @Valid @RequestBody UserProfileUpdateDto updateDto) {
-        User updatedUser = authService.updateProfile(userId, updateDto);
+        AuthUser updatedUser = authService.updateProfile(userId, updateDto);
         return ResponseEntity.ok(UserResponse.fromUser(updatedUser));
     }
 

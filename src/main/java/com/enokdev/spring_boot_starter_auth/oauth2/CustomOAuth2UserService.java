@@ -1,6 +1,6 @@
 package com.enokdev.spring_boot_starter_auth.oauth2;
 
-import com.enokdev.spring_boot_starter_auth.entities.User;
+import com.enokdev.spring_boot_starter_auth.entities.AuthUser;
 import com.enokdev.spring_boot_starter_auth.exeption.EmailAlreadyExistsException;
 import com.enokdev.spring_boot_starter_auth.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +45,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationException("Email not found from OAuth2 provider");
         }
 
-        Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
-        User user;
+        Optional<AuthUser> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+        AuthUser user;
 
         if (userOptional.isPresent()) {
             user = userOptional.get();
@@ -62,8 +62,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return OAuth2UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
-    private User registerNewUser(OAuth2UserRequest userRequest, OAuth2UserInfo oAuth2UserInfo) {
-        User user = new User();
+    private AuthUser registerNewUser(OAuth2UserRequest userRequest, OAuth2UserInfo oAuth2UserInfo) {
+        AuthUser user = new AuthUser();
 
         user.setProvider(AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase()));
         user.setProviderId(oAuth2UserInfo.getId());
@@ -77,7 +77,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return userRepository.save(user);
     }
 
-    private User updateExistingUser(User user, OAuth2UserInfo oAuth2UserInfo) {
+    private AuthUser updateExistingUser(AuthUser user, OAuth2UserInfo oAuth2UserInfo) {
         user.setName(oAuth2UserInfo.getName());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(user);

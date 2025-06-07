@@ -1,9 +1,8 @@
 package com.enokdev.spring_boot_starter_auth.services;
 
-import com.enokdev.spring_boot_starter_auth.entities.User;
+import com.enokdev.spring_boot_starter_auth.entities.AuthUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +26,7 @@ public class JwtService {
 
 
 
-    public String generateToken(User user) {
+    public String generateToken(AuthUser user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", user.getRoles());
         return Jwts

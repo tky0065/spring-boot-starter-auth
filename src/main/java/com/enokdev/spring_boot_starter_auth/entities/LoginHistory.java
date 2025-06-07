@@ -30,7 +30,7 @@ public class LoginHistory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private AuthUser user;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
@@ -58,7 +58,7 @@ public class LoginHistory {
         timestamp = LocalDateTime.now();
     }
 
-    public static LoginHistory createSuccessLogin(User user, String ipAddress, String userAgent) {
+    public static LoginHistory createSuccessLogin(AuthUser user, String ipAddress, String userAgent) {
         return LoginHistory.builder()
                 .user(user)
                 .success(true)
@@ -67,7 +67,7 @@ public class LoginHistory {
                 .build();
     }
 
-    public static LoginHistory createFailedLogin(User user, String ipAddress, String userAgent, String failureReason) {
+    public static LoginHistory createFailedLogin(AuthUser user, String ipAddress, String userAgent, String failureReason) {
         return LoginHistory.builder()
                 .user(user)
                 .success(false)
