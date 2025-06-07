@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -83,5 +84,32 @@ public class AuthUser {
 
     public boolean isLocked() {
         return !this.isAccountNonLocked();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        // Garantit que les valeurs obligatoires sont initialisées avant la persistance
+        this.accountNonLocked = true;
+        this.enabled = true;
+        this.emailVerified = false;
+        this.failedAttempts = 0;
+        this.provider = AuthProvider.LOCAL;
+        this.providerId = providerId != null ? providerId : "";
+
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+
+        if (this.lastLogin == null) {
+            this.lastLogin = LocalDateTime.now();
+        }
+
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
+
+        if (this.loginHistory == null) {
+            this.loginHistory = new ArrayList<>();
+        }
     }
 }
